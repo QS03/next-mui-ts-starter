@@ -1,5 +1,7 @@
 import React, { useState, CSSProperties } from 'react';
 import { Box, Button } from '@mui/material';
+import { useSnackbar } from 'notistack';
+
 import {
   useCSVReader,
   formatFileSize,
@@ -74,16 +76,38 @@ const styles = {
   } as CSSProperties,
 };
 
+const CSVHeader = [
+  'Campaign ID',
+  'Campaign Title',
+  'Campaign Objective',
+  'Ad Group ID',
+  'Ad Group Campaign ID',
+  'Ad Group Title',
+  'Geo Locations',
+  'Start Date',
+  'End Date',
+  'Ad ID',
+  'Ad Title',
+  'Ad Ad Group ID',
+  'Post ID',
+];
+
 interface CSVUploaderProps {
   onUpload: (data: any) => void;
 }
 
 export const CSVUploader = ({ onUpload }: CSVUploaderProps) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removed, setRemoved] = useState(true);
 
   const handleCSVUpload = (results: any) => {
+    if(results.data[0].toString() !== CSVHeader.toString()) {
+      enqueueSnackbar('Invalid CSV schema', {variant: 'error'});
+      return;
+    }
+
     onUpload(results.data);
     setRemoved(false);
     setZoneHover(false);

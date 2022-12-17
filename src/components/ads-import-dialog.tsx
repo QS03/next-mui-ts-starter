@@ -1,4 +1,5 @@
 import { useState, forwardRef, ReactElement, Ref } from 'react';
+
 import {
   AppBar,
   Toolbar,
@@ -7,9 +8,9 @@ import {
   List,
   Divider,
   Typography,
-  TransitionProps,
   Slide,
 } from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
 
 import MUIDataTable from 'mui-datatables';
 
