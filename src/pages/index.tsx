@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Next App</title>
       </Head>
       <Box sx={{ width: '100%', p: 2 }}>
         <AdsImportDialog
