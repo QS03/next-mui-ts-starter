@@ -98,6 +98,7 @@ class AdsManager {
 
   printAds(entityType: string | null, entityId: string | null) {
     let filteredResults;
+    
     if (!entityType && !entityId) {
       const campaigns = this.results.map((result) => ({
         id: result[0],

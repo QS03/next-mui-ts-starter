@@ -23,18 +23,18 @@ export const adsSlice = createSlice({
       adsManager.clearAds();
       state.results = [];
     },
-    filterPrintResults: (state, { payload }) => {
+    print: (state, { payload }) => {
       state.printResults = adsManager.printAds(
         payload.entityType,
         payload.entityId
       );
     },
-    clearPrintResults: (state) => {
+    clearPrint: (state) => {
       state.printResults = {};
     },
   },
 });
 
-export const { upload, clear } = adsSlice.actions;
+export const { upload, clear, print, clearPrint } = adsSlice.actions;
 
 export default adsSlice.reducer;

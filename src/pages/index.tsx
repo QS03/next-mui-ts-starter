@@ -1,22 +1,30 @@
 import Head from 'next/head';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Tab, Box, Button } from '@mui/material';
+import {Box, Button } from '@mui/material';
 import { RootState } from '../redux/store';
 
 import AdsImportDialog from '../components/ads-import-dialog';
+import AdsPrintDialog from '../components/ads-print-dialog';
 import AdsResultTable from '../components/ads-result-table';
 
-import { upload, clear } from '../redux/slices/ads';
+import { upload, clear, print, clearPrint } from '../redux/slices/ads';
 
 export default function Home() {
   const dispatch = useDispatch();
   const [openImport, setOpenImport] = useState(false);
-  const { results } = useSelector((state: RootState) => state.ads);
+  const [openPrint, setOpenPrint] = useState(false);
+  const { results, printResults } = useSelector(
+    (state: RootState) => state.ads
+  );
 
   useEffect(() => {
     console.log(results);
   }, [results]);
+
+  useEffect(() => {
+    console.log(printResults);
+  }, [printResults]);
 
   const handleImportClick = () => {
     setOpenImport(true);
@@ -32,8 +40,22 @@ export default function Home() {
   };
 
   const handleClear = () => {
-    dispatch(clear())
+    dispatch(clear());
   };
+
+  const handlePrintClick = () => {
+    setOpenPrint(true);
+  };
+
+  const handleFilter = (entityType: string, entityId: string) => {
+    dispatch(print({entityType, entityId}));
+  };
+
+  const handlePrintClose = () => {
+    setOpenPrint(false);
+    dispatch(clearPrint());
+  };
+
   return (
     <>
       <Head>
@@ -44,6 +66,12 @@ export default function Home() {
           open={openImport}
           onSubmit={handleImportSubmit}
           onCancel={handleImportCancel}
+        />
+        <AdsPrintDialog
+          open={openPrint}
+          results={printResults}
+          onFilter={handleFilter}
+          onClose={handlePrintClose}
         />
         <Box
           sx={{
@@ -59,11 +87,14 @@ export default function Home() {
           <Button variant="contained" onClick={handleImportClick}>
             Export
           </Button>
+          <Button variant="contained" onClick={handlePrintClick}>
+            Print
+          </Button>
           <Button variant="contained" onClick={handleClear}>
             Clear
           </Button>
         </Box>
-        <Box sx={{mt: 2}}>
+        <Box sx={{ mt: 2 }}>
           <AdsResultTable results={results} />
         </Box>
       </Box>
